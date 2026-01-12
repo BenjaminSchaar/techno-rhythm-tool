@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techno Rhythm Library - Learn & Download Techno Drum Patterns</title>
+    <meta name="description" content="Free interactive techno drum pattern library. Learn, visualize, and download MIDI files for classic techno, minimal, hard techno, hypnotic, and more.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🎛️ Techno Rhythm Library</h1>
+            <p class="subtitle">Learn, Visualize & Download Professional Techno Drum Patterns</p>
+        </header>
+
+        <!-- Custom Editor CTA -->
+        <section class="custom-editor-cta">
+            <div class="cta-content">
+                <div class="cta-text">
+                    <h2>🎨 Try the Custom Rhythm Editor</h2>
+                    <p class="cta-subtitle">Experiment with different layering techniques and accent types!</p>
+                    <ul class="cta-features">
+                        <li><strong>Per-Drum Accent Control</strong> - Set different accent types for each drum</li>
+                        <li><strong>3 Accent Techniques</strong> - Velocity (louder), Layer (highpass filtered), Pitch (+5%)</li>
+                        <li><strong>Mix & Match</strong> - Layer accent on kick + Pitch on claps = Professional groove!</li>
+                        <li><strong>Real-time Preview</strong> - Hear your changes instantly with TR-909 synthesis</li>
+                    </ul>
+                </div>
+                <div class="cta-action">
+                    <a href="custom-rhythm.html" class="cta-btn">
+                        <span class="cta-btn-icon">🎛️</span>
+                        <span class="cta-btn-text">
+                            <strong>Open Custom Editor</strong>
+                            <small>Create & experiment with accents</small>
+                        </span>
+                    </a>
+                    <p class="cta-note">Build your own patterns, test accent combinations, download MIDI</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pattern Selector -->
+        <section class="pattern-selector">
+            <h2>Select a Rhythm Pattern</h2>
+            <div class="pattern-categories">
+                <button class="category-btn active" data-category="all">All Patterns</button>
+                <button class="category-btn" data-category="classic">Classic Techno</button>
+                <button class="category-btn" data-category="minimal">Minimal</button>
+                <button class="category-btn" data-category="hard">Hard Techno</button>
+                <button class="category-btn" data-category="hypnotic">Hypnotic</button>
+                <button class="category-btn" data-category="groove">Groove</button>
+            </div>
+
+            <div class="pattern-list" id="patternList">
+                <!-- Patterns will be dynamically loaded here -->
+            </div>
+        </section>
+
+        <!-- Pattern Info & Visualizer -->
+        <section class="pattern-display">
+            <div class="pattern-info">
+                <h3 id="patternName">Select a pattern to begin</h3>
+                <p class="pattern-description" id="patternDescription">
+                    Choose a rhythm pattern from the list above to see its visualization, hear it play, and learn about its characteristics.
+                </p>
+                <div class="pattern-meta">
+                    <span class="meta-item" id="patternBPM"></span>
+                    <span class="meta-item" id="patternOrigin"></span>
+                    <span class="meta-item" id="patternMachine"></span>
+                </div>
+            </div>
+
+            <!-- Drum Grid Visualizer -->
+            <div class="grid-container">
+                <div class="grid-header">
+                    <div class="transport-controls">
+                        <button id="playBtn" class="control-btn play-btn">
+                            <span class="play-icon">▶</span>
+                            <span class="pause-icon" style="display:none;">⏸</span>
+                        </button>
+                        <button id="stopBtn" class="control-btn">⏹</button>
+                        <div class="bpm-control">
+                            <label for="bpmSlider">BPM: <span id="bpmValue">128</span></label>
+                            <input type="range" id="bpmSlider" min="80" max="160" value="128" step="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drum-grid" id="drumGrid">
+                    <!-- Grid will be generated dynamically -->
+                </div>
+
+                <div class="beat-labels">
+                    <div class="beat-label">1</div>
+                    <div class="beat-label">e</div>
+                    <div class="beat-label">&</div>
+                    <div class="beat-label">a</div>
+                    <div class="beat-label">2</div>
+                    <div class="beat-label">e</div>
+                    <div class="beat-label">&</div>
+                    <div class="beat-label">a</div>
+                    <div class="beat-label">3</div>
+                    <div class="beat-label">e</div>
+                    <div class="beat-label">&</div>
+                    <div class="beat-label">a</div>
+                    <div class="beat-label">4</div>
+                    <div class="beat-label">e</div>
+                    <div class="beat-label">&</div>
+                    <div class="beat-label">a</div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <div class="download-group">
+                    <button id="downloadMidiBtn" class="action-btn primary">
+                        📥 Download Clean MIDI
+                    </button>
+                    <button id="downloadMidiAccentsBtn" class="action-btn">
+                        📥 Download with Accent Track
+                    </button>
+                </div>
+                <button id="copyPatternBtn" class="action-btn">
+                    📋 Copy Pattern Info
+                </button>
+                <a href="custom-rhythm.html" class="action-btn accent-link">
+                    🎨 Create Custom Rhythm →
+                </a>
+            </div>
+        </section>
+
+        <!-- Educational Section -->
+        <section class="education-section">
+            <h2>Understanding Techno Rhythms</h2>
+            <div class="info-cards">
+                <div class="info-card">
+                    <h4>Four-on-the-Floor</h4>
+                    <p>The foundation of techno: a kick drum on every quarter note (beats 1, 2, 3, 4). This driving rhythm is what makes people move.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Off-Beat Hi-Hats</h4>
+                    <p>Closed hi-hats on the off-beats create forward momentum, while open hi-hats on the "&" of beats add energy and release.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Accent & Velocity</h4>
+                    <p>Yellow/gold highlighted beats are ACCENTED - they're played louder (velocity 110 vs 80). This creates groove and dynamics, making your rhythm feel alive, not robotic.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Accent Techniques</h4>
+                    <p>Accents can be created by: 1) Higher velocity (louder hit), 2) Layering a filtered version (highpass), or 3) Pitch shifting slightly up/down (great for claps/hats). Try the Custom Rhythm editor to experiment!</p>
+                </div>
+                <div class="info-card">
+                    <h4>Clean vs. Accent Track</h4>
+                    <p>Download "Clean MIDI" for all hits at equal velocity, or "With Accent Track" to get a separate track showing only accented beats - perfect for layering or creating custom accent sounds in your DAW.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Accent Track MIDI Notes</h4>
+                    <p><strong>Each drum has unique accent notes:</strong> Kick=35, Snare=40, Closed HH=44, Open HH=49, Clap=82, Perc=54. Map these to custom samples in your DAW - punchy kicks, rimshots, crashes, shakers - get creative!</p>
+                </div>
+                <div class="info-card">
+                    <h4>The TR-909 Legacy</h4>
+                    <p>Most patterns here are inspired by the legendary Roland TR-909, the drum machine that defined techno, house, and electronic music.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Support Section -->
+        <section class="support-section">
+            <div class="support-box">
+                <h3>💜 Enjoying this tool?</h3>
+                <p>This is a free educational resource for producers. If you find it helpful, consider supporting development!</p>
+                <div class="support-buttons">
+                    <a href="https://ko-fi.com/yourusername" target="_blank" class="support-btn kofi">
+                        ☕ Buy Me a Coffee
+                    </a>
+                    <a href="https://paypal.me/yourusername" target="_blank" class="support-btn paypal">
+                        💝 Donate via PayPal
+                    </a>
+                </div>
+                <p class="support-note">100% of donations go to maintaining and improving this tool</p>
+            </div>
+        </section>
+
+        <!-- Ad Placeholder -->
+        <div class="ad-container">
+            <div class="ad-placeholder">
+                <!-- Google AdSense code will go here -->
+                <p style="color: #666; text-align: center; padding: 20px;">Ad Space</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>Made with ❤️ for the techno community | <a href="https://github.com/yourusername" target="_blank">Open Source on GitHub</a></p>
+            <p class="credits">Drum patterns inspired by Roland TR-909, TR-808 & modern techno producers</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="patterns.js"></script>
+    <script src="midi-generator.js"></script>
+    <script src="audio-engine.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

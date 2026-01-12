@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Rhythm Editor - Techno Rhythm Library</title>
+    <meta name="description" content="Create and experiment with custom techno drum patterns. Interactive drum sequencer with accent control.">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .editor-container {
+            margin: 40px 0;
+        }
+
+        .accent-controls {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .accent-type-selector {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .accent-type-btn {
+            padding: 10px 20px;
+            background: var(--darker-bg);
+            border: 2px solid var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .accent-type-btn:hover {
+            border-color: var(--accent-color);
+        }
+
+        .accent-type-btn.active {
+            background: var(--accent-color);
+            color: var(--dark-bg);
+            border-color: var(--accent-color);
+        }
+
+        .accent-type-btn .icon {
+            font-size: 1.2rem;
+            margin-right: 5px;
+        }
+
+        .editor-instructions {
+            background: linear-gradient(135deg, rgba(255, 204, 0, 0.1), rgba(0, 255, 136, 0.1));
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--accent-color);
+            margin-bottom: 30px;
+        }
+
+        .editor-instructions h3 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .editor-instructions ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .editor-instructions li {
+            padding: 5px 0;
+            color: var(--text-secondary);
+        }
+
+        .editor-instructions li::before {
+            content: '▶ ';
+            color: var(--accent-color);
+            margin-right: 8px;
+        }
+
+        .drum-cell.editable {
+            cursor: pointer;
+        }
+
+        .drum-cell.editable:hover {
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        .preset-patterns {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .preset-btn {
+            padding: 8px 16px;
+            background: var(--darker-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .preset-btn:hover {
+            border-color: var(--primary-color);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .per-drum-accents {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .drum-accent-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
+            background: var(--darker-bg);
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .drum-accent-label {
+            color: var(--text-primary);
+            font-weight: 600;
+            min-width: 100px;
+        }
+
+        .accent-type-selector-small {
+            display: flex;
+            gap: 8px;
+        }
+
+        .accent-type-btn-small {
+            padding: 8px 12px;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .accent-type-btn-small:hover {
+            border-color: var(--accent-color);
+            transform: scale(1.05);
+        }
+
+        .accent-type-btn-small.active {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Pattern Library</a>
+
+        <!-- Header -->
+        <header>
+            <h1>🎨 Custom Rhythm Editor</h1>
+            <p class="subtitle">Create your own techno patterns and experiment with accents</p>
+        </header>
+
+        <!-- Instructions -->
+        <div class="editor-instructions">
+            <h3>How to Use</h3>
+            <ul>
+                <li><strong>Click a cell</strong> to toggle a hit on/off</li>
+                <li><strong>Click again</strong> to cycle: Off → Normal (green) → Accent (yellow) → Off</li>
+                <li><strong>Choose accent type below</strong> to hear different accent styles</li>
+                <li><strong>Play your pattern</strong> to hear it in action</li>
+                <li><strong>Download MIDI</strong> when you're happy with your creation</li>
+            </ul>
+        </div>
+
+        <!-- Accent Type Selector -->
+        <div class="accent-controls">
+            <h3>Accent Types (Per Drum)</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 15px;">
+                Choose different accent types for each drum. Mix and match for creative grooves!
+            </p>
+
+            <div class="per-drum-accents">
+                <!-- Kick -->
+                <div class="drum-accent-row">
+                    <span class="drum-accent-label">Kick</span>
+                    <div class="accent-type-selector-small">
+                        <button class="accent-type-btn-small active" data-drum="0" data-type="velocity">🔊</button>
+                        <button class="accent-type-btn-small" data-drum="0" data-type="layer">🎚️</button>
+                        <button class="accent-type-btn-small" data-drum="0" data-type="pitch">🎵</button>
+                    </div>
+                </div>
+
+                <!-- Snare -->
+                <div class="drum-accent-row">
+                    <span class="drum-accent-label">Snare</span>
+                    <div class="accent-type-selector-small">
+                        <button class="accent-type-btn-small active" data-drum="1" data-type="velocity">🔊</button>
+                        <button class="accent-type-btn-small" data-drum="1" data-type="layer">🎚️</button>
+                        <button class="accent-type-btn-small" data-drum="1" data-type="pitch">🎵</button>
+                    </div>
+                </div>
+
+                <!-- Closed HH -->
+                <div class="drum-accent-row">
+                    <span class="drum-accent-label">Closed HH</span>
+                    <div class="accent-type-selector-small">
+                        <button class="accent-type-btn-small active" data-drum="2" data-type="velocity">🔊</button>
+                        <button class="accent-type-btn-small" data-drum="2" data-type="layer">🎚️</button>
+                        <button class="accent-type-btn-small" data-drum="2" data-type="pitch">🎵</button>
+                    </div>
+                </div>
+
+                <!-- Open HH -->
+                <div class="drum-accent-row">
+                    <span class="drum-accent-label">Open HH</span>
+                    <div class="accent-type-selector-small">
+                        <button class="accent-type-btn-small active" data-drum="3" data-type="velocity">🔊</button>
+                        <button class="accent-type-btn-small" data-drum="3" data-type="layer">🎚️</button>
+                        <button class="accent-type-btn-small" data-drum="3" data-type="pitch">🎵</button>
+                    </div>
+                </div>
+
+                <!-- Clap -->
+                <div class="drum-accent-row">
+                    <span class="drum-accent-label">Clap</span>
+                    <div class="accent-type-selector-small">
+                        <button class="accent-type-btn-small active" data-drum="4" data-type="velocity">🔊</button>
+                        <button class="accent-type-btn-small" data-drum="4" data-type="layer">🎚️</button>
+                        <button class="accent-type-btn-small" data-drum="4" data-type="pitch">🎵</button>
+                    </div>
+                </div>
+
+                <!-- Perc -->
+                <div class="drum-accent-row">
+                    <span class="drum-accent-label">Perc</span>
+                    <div class="accent-type-selector-small">
+                        <button class="accent-type-btn-small active" data-drum="5" data-type="velocity">🔊</button>
+                        <button class="accent-type-btn-small" data-drum="5" data-type="layer">🎚️</button>
+                        <button class="accent-type-btn-small" data-drum="5" data-type="pitch">🎵</button>
+                    </div>
+                </div>
+            </div>
+
+            <p style="color: var(--text-secondary); margin-top: 15px; font-size: 0.9rem;">
+                <strong>🔊 Velocity:</strong> Louder hit (classic)<br>
+                <strong>🎚️ Layer:</strong> Adds highpass filtered layer (punch/crack)<br>
+                <strong>🎵 Pitch:</strong> Shifts pitch up 5% (great for claps/hats)
+            </p>
+        </div>
+
+        <!-- Custom Pattern Editor -->
+        <section class="pattern-display editor-container">
+            <div class="pattern-info">
+                <h3>Your Custom Pattern</h3>
+                <p class="pattern-description">
+                    Click cells in the grid below to build your rhythm. Green = normal hit, Yellow = accented hit.
+                </p>
+            </div>
+
+            <!-- Quick Presets -->
+            <div style="margin: 20px 0;">
+                <h4 style="color: var(--text-secondary); margin-bottom: 10px;">Quick Start:</h4>
+                <div class="preset-patterns">
+                    <button class="preset-btn" data-preset="fourOnFloor">Four-on-the-Floor</button>
+                    <button class="preset-btn" data-preset="minimal">Minimal</button>
+                    <button class="preset-btn" data-preset="breakbeat">Breakbeat</button>
+                    <button class="preset-btn" data-preset="clear">Clear All</button>
+                </div>
+            </div>
+
+            <!-- Drum Grid -->
+            <div class="grid-container">
+                <div class="grid-header">
+                    <div class="transport-controls">
+                        <button id="playBtn" class="control-btn play-btn">
+                            <span class="play-icon">▶</span>
+                            <span class="pause-icon" style="display:none;">⏸</span>
+                        </button>
+                        <button id="stopBtn" class="control-btn">⏹</button>
+                        <div class="bpm-control">
+                            <label for="bpmSlider">BPM: <span id="bpmValue">128</span></label>
+                            <input type="range" id="bpmSlider" min="80" max="160" value="128" step="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drum-grid" id="customDrumGrid">
+                    <!-- Grid will be generated dynamically -->
+                </div>
+
+                <div class="beat-labels">
+                    <div class="beat-label">1</div>
+                    <div class="beat-label">e</div>
+                    <div class="beat-label">&</div>
+                    <div class="beat-label">a</div>
+                    <div class="beat-label">2</div>
+                    <div class="beat-label">e</div>
+                    <div class="beat-label">&</div>
+                    <div class="beat-label">a</div>
+                    <div class="beat-label">3</div>
+                    <div class="beat-label">e</div>
+                    <div class="beat-label">&</div>
+                    <div class="beat-label">a</div>
+                    <div class="beat-label">4</div>
+                    <div class="beat-label">e</div>
+                    <div class="beat-label">&</div>
+                    <div class="beat-label">a</div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <div class="download-group">
+                    <button id="downloadMidiBtn" class="action-btn primary">
+                        📥 Download Clean MIDI
+                    </button>
+                    <button id="downloadMidiAccentsBtn" class="action-btn">
+                        📥 Download with Accent Track
+                    </button>
+                </div>
+                <button id="copyPatternBtn" class="action-btn">
+                    📋 Copy Pattern
+                </button>
+            </div>
+        </section>
+
+        <!-- Educational Section -->
+        <section class="education-section">
+            <h2>Accent Techniques Explained</h2>
+            <div class="info-cards">
+                <div class="info-card">
+                    <h4>💡 Velocity Accents</h4>
+                    <p>The classic approach. Accented hits are simply played louder (higher velocity). This is what the TR-909 "accent" button does. Simple, effective, and used on 99% of techno tracks.</p>
+                </div>
+                <div class="info-card">
+                    <h4>🎚️ Layer Accents</h4>
+                    <p>Add a highpass-filtered version of the sound on accented beats. This creates a "crack" or "snap" that cuts through the mix. Common on kicks and snares in modern techno. The filtered layer adds harmonics and presence.</p>
+                </div>
+                <div class="info-card">
+                    <h4>🎵 Pitch Accents</h4>
+                    <p>Shift the pitch up slightly (~+5%) on accented hits. Works GREAT on claps and hi-hats! Creates a rolling, evolving feel. Less common on kicks. This technique adds movement and groove.</p>
+                </div>
+                <div class="info-card">
+                    <h4>🔧 In Your DAW</h4>
+                    <p>Import your MIDI and try these: 1) Map accents to different samples, 2) Route accent track to a separate channel with effects, 3) Use automation to modulate filter/pitch on accent hits. Get creative!</p>
+                </div>
+                <div class="info-card">
+                    <h4>🎹 MIDI Note Mapping</h4>
+                    <p><strong>Accent Track uses unique notes per drum:</strong> Kick accent=35, Snare=40, HH Closed=44, HH Open=49, Clap=82, Perc=54. Map these to custom samples! Main track uses standard notes (Kick=36, Snare=38, etc.). See MIDI-MAPPING-GUIDE.md for full details.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>Made with ❤️ for the techno community | <a href="https://github.com/yourusername" target="_blank">Open Source on GitHub</a></p>
+            <p class="credits">Experiment, learn, and create!</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="patterns.js"></script>
+    <script src="midi-generator.js"></script>
+    <script src="audio-engine.js"></script>
+    <script src="custom-editor.js"></script>
+</body>
+</html>
